@@ -103,9 +103,6 @@ const (
 	// Don't check for EMX application type (only on EMX).
 	MAGIC_NO_CHECK_APPTYPE Flag = C.MAGIC_NO_CHECK_APPTYPE
 
-	// Don't allow decompressors that use fork.
-	MAGIC_NO_COMPRESS_FORK Flag = C.MAGIC_NO_COMPRESS_FORK
-
 	// Don't get extra information on MS Composite Document Files.
 	MAGIC_NO_CHECK_CDF Flag = C.MAGIC_NO_CHECK_CDF
 
@@ -136,8 +133,6 @@ const (
 	// Don't examine CSV files.
 	MAGIC_NO_CHECK_CSV Flag = C.MAGIC_NO_CHECK_CSV
 
-	// Don't examine SIMH tape files.
-	MAGIC_NO_CHECK_SIMH Flag = C.MAGIC_NO_CHECK_SIMH
 )
 
 // NewDecoder creates a detector that uses libmagic. It initializes
