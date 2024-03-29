@@ -1,4 +1,6 @@
-# magicmime [![Build Status](http://img.shields.io/travis/rakyll/magicmime/master.svg?style=flat)](https://travis-ci.org/rakyll/magicmime) [![GoDoc](https://godoc.org/github.com/rakyll/magicmime?status.svg)](https://godoc.org/github.com/rakyll/magicmime)
+# magicmime [![GoDoc](https://godoc.org/github.com/heinenn/magicmime?status.svg)](https://godoc.org/github.com/rakyll/magicmime)
+
+This is a fork from github.com/rakyll/magicmime with several updates.
 
 `magicmime` is a Go package which allows you to discover a file's mimetype by looking for magic numbers in its content. It could be used as a supplementary for Go's [`mime`](http://golang.org/pkg/mime/) package which only interprets the file extension to detect mimetypes. Internally, it implements [libmagic(3)](http://linux.die.net/man/3/libmagic) bindings.
 
@@ -12,16 +14,16 @@ This uses the `libmagic` library from the `file` tool, so you might need to inst
 In order to start, go get this repository:
 
 ``` sh
-go get github.com/rakyll/magicmime
+go get github.com/mrheinen/magicmime
 ```
 
 ### Examples
 
-See [godoc examples](https://godoc.org/pkg/github.com/rakyll/magicmime/#pkg-examples).
+See [godoc examples](https://godoc.org/pkg/github.com/mrheinen/magicmime/#pkg-examples).
 
 ## Docs
 
-https://godoc.org/github.com/rakyll/magicmime
+https://godoc.org/github.com/mrheinen/magicmime
 
 ## License
     Copyright 2013 Google Inc. All Rights Reserved.
