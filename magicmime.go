@@ -12,14 +12,15 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+//go:build linux || darwin || freebsd
 // +build linux darwin freebsd
 
 // Package magicmime detects mimetypes using libmagic.
 // This package requires libmagic, install it by the following
 // commands below.
-//	 - Debian or Ubuntu: apt-get install libmagic-dev
-//	 - RHEL, CentOS or Fedora: yum install file-devel
-//	 - Mac OS X: brew install libmagic
+//   - Debian or Ubuntu: apt-get install libmagic-dev
+//   - RHEL, CentOS or Fedora: yum install file-devel
+//   - Mac OS X: brew install libmagic
 package magicmime
 
 // #cgo CFLAGS: -I/usr/local/include
@@ -93,8 +94,17 @@ const (
 	// Return the Apple creator and type.
 	MAGIC_APPLE Flag = C.MAGIC_APPLE
 
+	// Return a slash-separated list of extensions for this file type.
+	MAGIC_EXTENSION Flag = C.MAGIC_EXTENSION
+
+	// Don't report on compression, only report about the uncompressed data.
+	MAGIC_COMPRESS_TRANSP Flag = C.MAGIC_COMPRESS_TRANSP
+
 	// Don't check for EMX application type (only on EMX).
 	MAGIC_NO_CHECK_APPTYPE Flag = C.MAGIC_NO_CHECK_APPTYPE
+
+	// Don't allow decompressors that use fork.
+	MAGIC_NO_COMPRESS_FORK Flag = C.MAGIC_NO_COMPRESS_FORK
 
 	// Don't get extra information on MS Composite Document Files.
 	MAGIC_NO_CHECK_CDF Flag = C.MAGIC_NO_CHECK_CDF
@@ -119,6 +129,15 @@ const (
 
 	// Don't look for known tokens inside ascii files.
 	MAGIC_NO_CHECK_TOKENS Flag = C.MAGIC_NO_CHECK_TOKENS
+
+	// Don't examine JSON files.
+	MAGIC_NO_CHECK_JSON Flag = C.MAGIC_NO_CHECK_JSON
+
+	// Don't examine CSV files.
+	MAGIC_NO_CHECK_CSV Flag = C.MAGIC_NO_CHECK_CSV
+
+	// Don't examine SIMH tape files.
+	MAGIC_NO_CHECK_SIMH Flag = C.MAGIC_NO_CHECK_SIMH
 )
 
 // NewDecoder creates a detector that uses libmagic. It initializes
@@ -193,6 +212,9 @@ func Open(flags Flag) error {
 func TypeByFile(filename string) (string, error) {
 	decMu.Lock()
 	defer decMu.Unlock()
+	if dec == nil {
+		return "", errors.New("decoder is not initialized: run Open() first")
+	}
 	return dec.TypeByFile(filename)
 }
 
@@ -201,11 +223,17 @@ func TypeByFile(filename string) (string, error) {
 func TypeByBuffer(blob []byte) (string, error) {
 	decMu.Lock()
 	defer decMu.Unlock()
+	if dec == nil {
+		return "", errors.New("decoder is not initialized: run Open() first")
+	}
 	return dec.TypeByBuffer(blob)
 }
 
 // Close cleans up the resources associated with the global detector.
 func Close() {
+	if dec == nil {
+		return
+	}
 	dec.Close()
 	dec = nil
 }
